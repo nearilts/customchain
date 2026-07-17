@@ -88,12 +88,12 @@ function char_w_raw(c, type) =
         c=="a" ? 0.78 : c=="b" ? 0.76 : c=="c" ? 0.74 :
         c=="d" ? 0.84 : c=="e" ? 0.76 : c=="f" ? 0.54 :
         c=="g" ? 0.76 : c=="h" ? 0.78 : c=="i" ? 0.38 : // Dioptimasi agar huruf setelah 'i' tidak menempel
-        c=="j" ? 0.44 : c=="k" ? 0.84 : c=="l" ? 0.32 : // Dioptimasi agar huruf setelah 'l' tidak menempel
+        c=="j" ? 0.44 : c=="k" ? 0.84 : c=="l" ? 0.38 : // Dioptimasi agar huruf setelah 'l' tidak menempel
         c=="m" ? 1.14 : c=="n" ? 0.78 : c=="o" ? 0.78 :
         c=="p" ? 0.76 : c=="q" ? 0.86 : c=="r" ? 0.70 : // Dioptimasi agar 'rn' tidak menempel
-        c=="s" ? 0.76 : c=="t" ? 0.70 : c=="u" ? 0.74 : // Dioptimasi agar 'sh' tidak menempel
+        c=="s" ? 0.76 : c=="t" ? 0.70 : c=="u" ? 0.84 : // Dioptimasi agar 'sh' tidak menempel
         c=="v" ? 0.74 : c=="w" ? 0.94 : c=="x" ? 0.70 :
-        c=="y" ? 0.74 : c=="z" ? 0.70 : 
+        c=="y" ? 0.74 : c=="z" ? 0.80 : 
         c=="." ? 0.10 :
         c==" " ? 0.50 : 0.76
     ) : (
