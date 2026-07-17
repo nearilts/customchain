@@ -20,7 +20,7 @@ base_color_name = "Peak Green"; // [Yellow, White, Sky Blue, Red, Peak Green, Or
 letters_color_name = "White"; // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
 
 /* [Settings] */
-font_name        = "Bagel Fat One";
+font_name        = "Bagel Fat One"; // font [Bagel Fat One, Chewy, Courgette, Dancing Script, Lemon, Lobster, Pacifico, Playfair, Lily Script One, Sacramento, Bubblegum Sans, DynaPuff, Alkatra, Archivo, Sour Gummy, Shrikhand]
 letter_height    = 12;
 letter_thickness = 1.4;
 base_height      = 12;
@@ -88,7 +88,7 @@ function char_w_raw(c, type) =
         c=="A" ? 0.96 : c=="B" ? 0.80 : c=="C" ? 0.84 :
         c=="D" ? 0.84 : c=="E" ? 0.86 : c=="F" ? 0.76 :
         c=="G" ? 0.86 : c=="H" ? 0.93 : c=="I" ? 0.4  :
-        c=="J" ? 0.76 : c=="K" ? 0.82 : c=="L" ? 0.74 :
+        c=="J" ? 0.76 : c=="K" ? 0.92 : c=="L" ? 0.74 :
         c=="M" ? 1.20 : c=="N" ? 0.98 : c=="O" ? 0.90 :
         c=="P" ? 0.88 : c=="Q" ? 0.90 : c=="R" ? 0.92 :
         c=="S" ? 0.90 : c=="T" ? 0.74 : c=="U" ? 0.86 :

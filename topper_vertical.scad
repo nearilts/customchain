@@ -20,7 +20,7 @@ base_color_name    = "Peak Green"; // [Yellow, White, Sky Blue, Red, Peak Green,
 letters_color_name = "White";      // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
 
 /* [Settings] */
-font_name        = "Bagel Fat One";
+font_name        = "Bagel Fat One"; // font [Bagel Fat One, Chewy, Courgette, Dancing Script, Lemon, Lobster, Pacifico, Playfair, Lily Script One, Sacramento, Bubblegum Sans, DynaPuff, Alkatra, Archivo, Sour Gummy, Shrikhand]
 letter_height    = 12;
 letter_thickness = 1.4;
 base_height      = 12;
