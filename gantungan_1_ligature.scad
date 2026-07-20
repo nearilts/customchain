@@ -92,7 +92,7 @@ function char_w_raw(c, type) =
         c=="m" ? 1.14 : c=="n" ? 0.78 : c=="o" ? 0.78 :
         c=="p" ? 0.76 : c=="q" ? 0.86 : c=="r" ? 0.70 : // Dioptimasi agar 'rn' tidak menempel
         c=="s" ? 0.76 : c=="t" ? 0.70 : c=="u" ? 0.84 : // Dioptimasi agar 'sh' tidak menempel
-        c=="v" ? 0.74 : c=="w" ? 1.34 : c=="x" ? 0.70 :
+        c=="v" ? 0.74 : c=="w" ? 1.14 : c=="x" ? 0.70 :
         c=="y" ? 0.74 : c=="z" ? 0.80 : 
         c=="." ? 0.10 :
         c==" " ? 0.50 : 0.76
