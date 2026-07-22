@@ -64,7 +64,7 @@ function getColor(name) =
     name == "Orange"       ? "#FF6A00" :
     name == "Grape Purple" ? "#6A0DAD" :
     name == "Black"        ? "#000000" :
-    name == "Beige"        ? "#F5F5DC" :
+    name == "Beige"        ? "#D9B99b" :
     name == "Barbie Pink"  ? "#FF69B4" :
     "#FFFFFF";
 
