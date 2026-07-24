@@ -105,7 +105,7 @@ function char_w_raw(c, type) =
         c=="s" ? 0.76 : c=="t" ? 0.70 : c=="u" ? 0.84 : // Dioptimasi agar 'sh' tidak menempel
         c=="v" ? 0.74 : c=="w" ? 1.14 : c=="x" ? 0.70 :
         c=="y" ? 0.74 : c=="z" ? 0.80 : 
-        c=="." ? 0.10 :
+        c=="." ? 0.10 : ord(c)==194 ? 0.18 : ord(c)==176 ? 0.18 :
         c==" " ? 0.50 : 0.76
     ) : (
         // Kustom 0.70
@@ -457,7 +457,7 @@ module draw_icon(name, size = 10) {
 // ─────────────────────────────────────────────
 // EMOJI CLEANER & AUTO DETECT
 // ─────────────────────────────────────────────
-function is_printable_ascii(c) = ord(c) >= 32 && ord(c) <= 126;
+function is_printable_ascii(c) = (ord(c) >= 32 && ord(c) <= 126) || ord(c) == 194 || ord(c) == 176 || ord(c) == 177;
 
 function str_join(arr, idx=0) = 
     idx >= len(arr) ? "" :

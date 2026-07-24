@@ -115,7 +115,7 @@ function char_w_raw(c, type) =
         c=="s" ? 0.78 : c=="t" ? 0.72 : c=="u" ? 0.84 :
         c=="v" ? 0.76 : c=="w" ? 1.14 : c=="x" ? 0.74 :
         c=="y" ? 0.86 : c=="z" ? 0.80 : 
-        c=="." ? 0.10 :
+        c=="." ? 0.10 : ord(c)==194 ? 0.18 : ord(c)==176 ? 0.18 :
         c==" " ? 0.50 : 0.76
     ) : (
         // Kustom 0.70
@@ -458,7 +458,7 @@ module draw_icon(name, size = 10) {
 // ─────────────────────────────────────────────
 // EMOJI / NON-ASCII STRING CLEANER
 // ─────────────────────────────────────────────
-function is_printable_ascii(c) = ord(c) >= 32 && ord(c) <= 126;
+function is_printable_ascii(c) = (ord(c) >= 32 && ord(c) <= 126) || ord(c) == 194 || ord(c) == 176 || ord(c) == 177;
 
 function str_join(arr, idx=0) = 
     idx >= len(arr) ? "" :
