@@ -97,10 +97,10 @@ slot_h = Font_Size * (1 + Line2_Spacing + Line3_Spacing) + 2 * Border_Size;
 function char_w_raw(c, type) =
     type == 0 ? (
         // Kalibrasi v6 Teroptimasi (Tepat, Bebas tabrakan vertikal & horizontal m-a)
-        c=="A" ? 0.96 : c=="B" ? 0.80 : c=="C" ? 0.84 :
+        c=="A" ? 0.99 : c=="B" ? 0.80 : c=="C" ? 0.84 :
         c=="D" ? 0.84 : c=="E" ? 0.86 : c=="F" ? 0.76 :
         c=="G" ? 0.96 : c=="H" ? 0.93 : c=="I" ? 0.4  :
-        c=="J" ? 0.76 : c=="K" ? 0.92 : c=="L" ? 0.74 :
+        c=="J" ? 0.76 : c=="K" ? 0.92 : c=="L" ? 0.85 :
         c=="M" ? 1.20 : c=="N" ? 0.98 : c=="O" ? 0.90 :
         c=="P" ? 0.88 : c=="Q" ? 0.90 : c=="R" ? 0.92 :
         c=="S" ? 0.90 : c=="T" ? 0.74 : c=="U" ? 0.86 :
