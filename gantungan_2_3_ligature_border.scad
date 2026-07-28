@@ -1,6 +1,7 @@
-// ===============================
-//   CUSTOM KEYCHAIN – 3 Baris (max 3 nama)
-// ===============================
+﻿// =========================================================================
+//   CUSTOM KEYCHAIN – 2/3 Baris Ligature + Border Lines
+//   (Auto-detect Ligatures ff / fi / fl + Border Line Ring)
+// =========================================================================
 
 /* [Text Alignment] */
 Text_Align = "left"; // ["left","center","right"]
@@ -32,18 +33,22 @@ n3_line3 = "";
 n3_line3_icon = "None"; // ["None", "Anchor", "Heart", "Star", "Crown", "Paw", "Music", "Cat", "Moon", "Sun", "Flower", "Diamond", "Butterfly", "Ribbon", "Smile"]
 
 /* [Warna] */
-Plate_Color_Name = "White";    // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
-Text_Color_Name  = "Sky Blue"; // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
+Plate_Color_Name  = "White";    // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
+Text_Color_Name   = "Sky Blue"; // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
+Border_Color_Name = "Sky Blue"; // [Yellow, White, Sky Blue, Red, Peak Green, Orange, Grape Purple, Black, Beige, Barbie Pink]
 
 /* [Font Settings] */
-Font_Name         = "Bagel Fat One"; // font [Lemon, Bagel Fat One, Pixelify Sans:style=Medium, Chewy, Courgette, Dancing Script, Lobster, Pacifico, Playfair, Lily Script One, Sacramento, Bubblegum Sans, DynaPuff, Alkatra, Archivo, Sour Gummy, Shrikhand]
+Font_Name         = "Bagel Fat One"; // [Lemon, Bagel Fat One, Pixelify Sans:style=Medium, Chewy, Courgette, Dancing Script, Lobster, Pacifico, Playfair, Lily Script One, Sacramento, Bubblegum Sans, DynaPuff, Alkatra, Archivo, Sour Gummy, Shrikhand]
 Font_Size         = 13;
 Font_Weight_Steps = 0; // [-10:1:20]
 Font_Weight       = Font_Weight_Steps / 10;
 Letter_Spacing    = 1.00; // [0.8:0.01:2.0]
 
-// Faktor estimasi lebar rata-rata per karakter (tanpa tabel kalibrasi)
-// Sesuaikan nilai ini jika posisi lubang kurang pas untuk font tertentu
+Width_Scale       = 1.0;   // [0.8:0.02:1.5]
+Ligature_Extra    = 1.5;   // [0:0.1:5]
+Spacing_Method    = 0; // [0: Asli, 1: Rata-Rata]
+Table_Type        = 0; // [0: Kalibrasi v6, 1: Kustom 0.70]
+
 Width_Factor      = 0.76; // [0.5:0.01:1.2]
 
 /* [Model Settings] */
@@ -58,6 +63,11 @@ Line3_Spacing      = 1.25; // [1.0:0.05:2.5]
 Offset_L1          = 0;   // [-40:1:40]
 Offset_L2          = 0;   // [-40:1:40]
 Offset_L3          = 0;   // [-40:1:40]
+
+/* [Border Line Settings] */
+Border_Line_Width  = 1.2; // [0.5:0.1:3.0] Lebar garis border (mm)
+Border_Line_Height = 1.5; // [0.5:0.1:3.0] Tinggi garis (menonjol ke atas, mm)
+Border_Smooth      = 4;   // [0:0.5:8] Halus/smooth kontur border (lebih tinggi = lebih oval)
 
 /* [Layout Grid] */
 bed_x     = 235;
@@ -80,17 +90,90 @@ function getColor(name) =
     name == "Barbie Pink"  ? "#FF69B4" :
     "#FFFFFF";
 
-Plate_Color = getColor(Plate_Color_Name);
-Text_Color  = getColor(Text_Color_Name);
+Plate_Color  = getColor(Plate_Color_Name);
+Text_Color   = getColor(Text_Color_Name);
+Border_Color = getColor(Border_Color_Name);
 $fn = 64;
 
-slot_h = Font_Size * (1 + Line2_Spacing + Line3_Spacing) + 2 * Border_Size;
+slot_h = Font_Size * 3;
 
-// ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
-// VECTOR 2D ICONS (100% CGAL Safe untuk MakerWorld)
-// ─────────────────────────────────────────────
+// -------------------------------------------------
+// TABEL LEBAR HURUF & LIGATURE
+// -------------------------------------------------
+function char_w_raw(c, type) =
+    type == 0 ? (
+        c=="A" ? 0.96 : c=="B" ? 0.80 : c=="C" ? 0.84 :
+        c=="D" ? 0.84 : c=="E" ? 0.76 : c=="F" ? 0.76 :
+        c=="G" ? 0.86 : c=="H" ? 0.86 : c=="I" ? 0.4  :
+        c=="J" ? 0.76 : c=="K" ? 0.82 : c=="L" ? 0.74 :
+        c=="M" ? 1.00 : c=="N" ? 0.98 : c=="O" ? 0.90 :
+        c=="P" ? 0.78 : c=="Q" ? 0.90 : c=="R" ? 0.92 :
+        c=="S" ? 0.76 : c=="T" ? 0.74 : c=="U" ? 0.86 :
+        c=="V" ? 0.84 : c=="W" ? 1.04 : c=="X" ? 0.80 :
+        c=="Y" ? 0.78 : c=="Z" ? 0.78 :
+        c=="a" ? 0.78 : c=="b" ? 0.76 : c=="c" ? 0.74 :
+        c=="d" ? 0.84 : c=="e" ? 0.76 : c=="f" ? 0.54 :
+        c=="g" ? 0.76 : c=="h" ? 0.78 : c=="i" ? 0.38 :
+        c=="j" ? 0.44 : c=="k" ? 0.74 : c=="l" ? 0.52 :
+        c=="m" ? 1.14 : c=="n" ? 0.78 : c=="o" ? 0.78 :
+        c=="p" ? 0.76 : c=="q" ? 0.76 : c=="r" ? 0.70 :
+        c=="s" ? 0.76 : c=="t" ? 0.60 : c=="u" ? 0.78 :
+        c=="v" ? 0.74 : c=="w" ? 0.94 : c=="x" ? 0.70 :
+        c=="y" ? 0.74 : c=="z" ? 0.70 :
+        c==" " ? 0.50 : 0.76
+    ) : (
+        c=="A" ? 0.96 : c=="B" ? 0.80 : c=="C" ? 0.84 :
+        c=="D" ? 0.84 : c=="E" ? 0.76 : c=="F" ? 0.76 :
+        c=="G" ? 0.86 : c=="H" ? 0.86 : c=="I" ? 0.4  :
+        c=="J" ? 0.56 : c=="K" ? 0.82 : c=="L" ? 0.74 :
+        c=="M" ? 1.00 : c=="N" ? 0.98 : c=="O" ? 0.90 :
+        c=="P" ? 0.78 : c=="Q" ? 0.90 : c=="R" ? 0.92 :
+        c=="S" ? 0.76 : c=="T" ? 0.74 : c=="U" ? 0.86 :
+        c=="V" ? 0.84 : c=="W" ? 1.04 : c=="X" ? 0.80 :
+        c=="Y" ? 0.78 : c=="Z" ? 0.78 :
+        c=="a" ? 0.78 : c=="b" ? 0.70 : c=="c" ? 0.70 :
+        c=="d" ? 0.70 : c=="e" ? 0.70 : c=="f" ? 0.54 :
+        c=="g" ? 0.70 : c=="h" ? 0.70 : c=="i" ? 0.36 :
+        c=="j" ? 0.70 : c=="k" ? 0.70 : c=="l" ? 0.70 :
+        c=="m" ? 0.70 : c=="n" ? 0.70 : c=="o" ? 0.70 :
+        c=="p" ? 0.70 : c=="q" ? 0.70 : c=="r" ? 0.70 :
+        c=="s" ? 0.70 : c=="t" ? 0.70 : c=="u" ? 0.70 :
+        c=="v" ? 0.70 : c=="w" ? 0.70 : c=="x" ? 0.70 :
+        c=="y" ? 0.70 : c=="z" ? 0.70 :
+        c==" " ? 0.50 : 0.76
+    );
+
+function char_w(c) = char_w_raw(c, Table_Type);
+
+function is_ligature_pair(c1, c2) =
+    (c1 == "f" && c2 == "f") ||
+    (c1 == "f" && c2 == "i") ||
+    (c1 == "f" && c2 == "l");
+
+function has_ligature(str_val) =
+    len(str_val) < 2 ? false :
+    len([for (i = [0:len(str_val)-2]) if (is_ligature_pair(str_val[i], str_val[i+1])) 1]) > 0;
+
+function char_advance(str_val, i) =
+    i >= len(str_val) ? 0 :
+    let(
+        curr = str_val[i],
+        prev = i > 0 ? str_val[i-1] : "",
+        is_lig = i > 0 && is_ligature_pair(prev, curr),
+        extra  = is_lig ? Ligature_Extra : 0,
+        base_w = Spacing_Method == 1 ?
+            (i > 0 ? (char_w(prev) + char_w(curr)) / 2 * Font_Size * Width_Scale : 0) :
+            (i > 0 ? char_w(prev) * Font_Size * Width_Scale : 0)
+    )
+    (base_w + extra) * Letter_Spacing;
+
+function cx(str_val, i) =
+    i <= 0 ? 0 :
+    cx(str_val, i - 1) + char_advance(str_val, i);
+
+// -------------------------------------------------
+// VECTOR 2D ICONS
+// -------------------------------------------------
 module icon_anchor(h = 10) {
     s = h / 12;
     scale([s, s]) {
@@ -354,40 +437,39 @@ module icon_smile(h = 10) {
 
 module draw_icon(name, size = 10) {
     if (name == "Anchor") {
-        translate([size * 0.50, 0, 0]) icon_anchor(size);
+        translate([size * 0.4, 0, 0]) icon_anchor(size);
     } else if (name == "Heart") {
-        translate([size * 0.50, 0, 0]) icon_heart(size);
+        translate([size * 0.44, 0, 0]) icon_heart(size);
     } else if (name == "Star") {
-        translate([size * 0.50, 0, 0]) icon_star(size);
+        translate([size * 0.4, 0, 0]) icon_star(size);
     } else if (name == "Crown") {
-        translate([size * 0.50, 0, 0]) icon_crown(size);
+        translate([size * 0.4, 0, 0]) icon_crown(size);
     } else if (name == "Paw") {
-        translate([size * 0.50, 0, 0]) icon_paw(size);
+        translate([size * 0.4, 0, 0]) icon_paw(size);
     } else if (name == "Music") {
-        translate([size * 0.50, 0, 0]) icon_music(size);
+        translate([size * 0.4, 0, 0]) icon_music(size);
     } else if (name == "Cat") {
-        translate([size * 0.50, 0, 0]) icon_cat(size);
+        translate([size * 0.4, 0, 0]) icon_cat(size);
     } else if (name == "Moon") {
-        translate([size * 0.50, 0, 0]) icon_moon(size);
+        translate([size * 0.4, 0, 0]) icon_moon(size);
     } else if (name == "Sun") {
-        translate([size * 0.50, 0, 0]) icon_sun(size);
+        translate([size * 0.4, 0, 0]) icon_sun(size);
     } else if (name == "Flower") {
-        translate([size * 0.50, 0, 0]) icon_flower(size);
+        translate([size * 0.4, 0, 0]) icon_flower(size);
     } else if (name == "Diamond") {
-        translate([size * 0.50, 0, 0]) icon_diamond(size);
+        translate([size * 0.4, 0, 0]) icon_diamond(size);
     } else if (name == "Butterfly") {
-        translate([size * 0.50, 0, 0]) icon_butterfly(size);
+        translate([size * 0.4, 0, 0]) icon_butterfly(size);
     } else if (name == "Ribbon") {
-        translate([size * 0.50, 0, 0]) icon_ribbon(size);
+        translate([size * 0.4, 0, 0]) icon_ribbon(size);
     } else if (name == "Smile") {
-        translate([size * 0.50, 0, 0]) icon_smile(size);
+        translate([size * 0.4, 0, 0]) icon_smile(size);
     }
 }
 
-// ─────────────────────────────────────────────
-// EMOJI / NON-ASCII STRING CLEANER
-// (Mencegah error "NO GLYPH" di MakerWorld)
-// ─────────────────────────────────────────────
+// -------------------------------------------------
+// EMOJI CLEANER & AUTO DETECT
+// -------------------------------------------------
 function is_printable_ascii(c) = (ord(c) >= 32 && ord(c) <= 126) || ord(c) == 194 || ord(c) == 176 || ord(c) == 177;
 
 function str_join(arr, idx=0) = 
@@ -407,44 +489,18 @@ function resolve_icon(word, select_icon) =
     has_emoji_or_symbol(word) ? "Anchor" :
     "None";
 
-// ─────────────────────────────────────────────
-function char_w_val(c) =
-    c=="A" ? 0.96 : c=="B" ? 0.80 : c=="C" ? 0.84 :
-    c=="D" ? 0.84 : c=="E" ? 0.86 : c=="F" ? 0.76 :
-    c=="G" ? 0.96 : c=="H" ? 0.93 : c=="I" ? 0.4  :
-    c=="J" ? 0.76 : c=="K" ? 0.92 : c=="L" ? 0.74 :
-    c=="M" ? 1.20 : c=="N" ? 0.98 : c=="O" ? 0.90 :
-    c=="P" ? 0.88 : c=="Q" ? 0.90 : c=="R" ? 0.92 :
-    c=="S" ? 0.90 : c=="T" ? 0.74 : c=="U" ? 0.86 :
-    c=="V" ? 0.84 : c=="W" ? 1.14 : c=="X" ? 0.80 :
-    c=="Y" ? 0.78 : c=="Z" ? 0.78 :
-    c=="a" ? 0.85 : c=="b" ? 0.79 : c=="c" ? 0.74 :
-    c=="d" ? 0.84 : c=="e" ? 0.76 : c=="f" ? 0.54 :
-    c=="g" ? 0.76 : c=="h" ? 0.78 : c=="i" ? 0.38 :
-    c=="j" ? 0.44 : c=="k" ? 0.84 : c=="l" ? 0.38 :
-    c=="m" ? 1.08 : c=="n" ? 0.78 : c=="o" ? 0.78 :
-    c=="p" ? 0.76 : c=="q" ? 0.86 : c=="r" ? 0.70 :
-    c=="s" ? 0.76 : c=="t" ? 0.70 : c=="u" ? 0.84 :
-    c=="v" ? 0.74 : c=="w" ? 1.14 : c=="x" ? 0.70 :
-    c=="y" ? 0.74 : c=="z" ? 0.80 :
-    c=="." ? 0.10 : ord(c)==194 ? 0.18 : ord(c)==176 ? 0.18 :
-    c==" " ? 0.50 : 0.76;
-
-function sum_char_w(str_val, idx=0) =
-    idx >= len(str_val) ? 0 :
-    char_w_val(str_val[idx]) + sum_char_w(str_val, idx+1);
-
 function get_raw_word_width(word) =
     let(cleaned = clean_text(word))
-    sum_char_w(cleaned) * Font_Size * Letter_Spacing;
+    len(cleaned) == 0 ? 0 :
+    cx(cleaned, len(cleaned)-1) + char_w(cleaned[len(cleaned)-1]) * Font_Size * Width_Scale;
 
 function get_word_width(word, icon_name = "None") = 
     let(effective_icon = resolve_icon(word, icon_name))
     get_raw_word_width(word) + (effective_icon != "None" ? Font_Size * 0.9 : 0);
 
-// ─────────────────────────────────────────────
+// -------------------------------------------------
 // ALIGNMENT TEXT & DYNAMIC HOLE LOGIC
-// ─────────────────────────────────────────────
+// -------------------------------------------------
 function align_offset() =
     Text_Align == "left"   ? -slot_w/2 + Border_Size :
     Text_Align == "right"  ?  slot_w/2 - Border_Size :
@@ -456,11 +512,18 @@ function get_line_left(word, offset_val, icon_name = "None") =
     Text_Align == "right"  ? align_offset() + offset_val - get_word_width(word, icon_name) :
     align_offset() + offset_val;
 
-// Lobang selalu diposisikan relatif terhadap batas kiri Baris 1 (l1) agar tidak melayang
 function fixedHoleX(l1, icon_name = "None") = get_line_left(l1, Offset_L1, icon_name) - Hole_Radius + Hole_position;
 function fixedHoleY() = Font_Size * 0.5 + Hole_Height_Offset;
 
-// Merender baris teks dengan alignment manual + auto vector icon
+module render_chars(word) {
+    cleaned = clean_text(word);
+    for (i = [0 : len(cleaned) - 1]) {
+        translate([cx(cleaned, i), 0, 0])
+            offset(delta = Font_Weight)
+                text(cleaned[i], size = Font_Size, font = Font_Name);
+    }
+}
+
 module render_line(word, icon_name = "None") {
     effective_icon = resolve_icon(word, icon_name);
     cleaned = clean_text(word);
@@ -474,8 +537,12 @@ module render_line(word, icon_name = "None") {
     
     translate([align_shift, 0, 0]) {
         if (cleaned != "") {
-            offset(delta = Font_Weight)
-                text(cleaned, size = Font_Size, font = Font_Name, spacing = Letter_Spacing);
+            if (has_ligature(cleaned)) {
+                render_chars(cleaned);
+            } else {
+                offset(delta = Font_Weight)
+                    text(cleaned, size = Font_Size, font = Font_Name, spacing = Letter_Spacing);
+            }
         }
         
         if (effective_icon != "None") {
@@ -486,16 +553,13 @@ module render_line(word, icon_name = "None") {
     }
 }
 
-// ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
-// GEOMETRY GENERATION
-// ─────────────────────────────────────────────
 module generateTextShape(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
-    union() {
-        base_x = align_offset();
+    base_x = align_offset();
 
-        translate([base_x + Offset_L1, 0, 0])
-            render_line(l1, ic1);
+    union() {
+        if (l1 != "")
+            translate([base_x + Offset_L1, 0, 0])
+                render_line(l1, ic1);
 
         if (l2 != "")
             translate([base_x + Offset_L2, -Font_Size * Line2_Spacing, 0])
@@ -507,32 +571,51 @@ module generateTextShape(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
     }
 }
 
-module generateBackPlate(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
+// -------------------------------------------------
+// BACKPLATE 2D SHAPE - menggabungkan teks offset & ring gantungan
+// -------------------------------------------------
+module backPlate2D(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
     union() {
-        // plate dari text
-        linear_extrude(Plate_Height)
-            offset(r = Border_Size)
+        offset(r = -Border_Smooth)
+            offset(r = Border_Size + Border_Smooth)
                 generateTextShape(l1, l2, l3, ic1, ic2, ic3);
 
-        // ring hole FIX kiri (DYNAMIC)
         hull() {
-            translate([fixedHoleX(l1, ic1), fixedHoleY(), 0])
-                cylinder(h = Plate_Height, r = Hole_Radius + 2);
+            translate([fixedHoleX(l1, ic1), fixedHoleY()])
+                circle(r = Hole_Radius + 2);
 
-            translate([fixedHoleX(l1, ic1) + 5, fixedHoleY(), 0])
-                cylinder(h = Plate_Height, r = Hole_Radius + 2);
+            translate([fixedHoleX(l1, ic1) + 5, fixedHoleY()])
+                circle(r = Hole_Radius + 2);
         }
     }
 }
 
+// -------------------------------------------------
+// BORDER LINE - garis menonjol di seluruh tepi plat
+// -------------------------------------------------
+module generateBorderLine(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
+    color(Border_Color)
+    translate([0, 0, Plate_Height])
+    linear_extrude(Border_Line_Height)
+        difference() {
+            backPlate2D(l1, l2, l3, ic1, ic2, ic3);
+            offset(r = -Border_Line_Width)
+                backPlate2D(l1, l2, l3, ic1, ic2, ic3);
+
+            translate([fixedHoleX(l1, ic1), fixedHoleY()])
+                circle(r = Hole_Radius);
+        }
+}
+
 module generateBackPlateWithHole(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
     color(Plate_Color)
-    difference() {
-        generateBackPlate(l1, l2, l3, ic1, ic2, ic3);
+    linear_extrude(Plate_Height)
+        difference() {
+            backPlate2D(l1, l2, l3, ic1, ic2, ic3);
 
-        translate([fixedHoleX(l1, ic1), fixedHoleY(), -1])
-            cylinder(h = Plate_Height + 2, r = Hole_Radius);
-    }
+            translate([fixedHoleX(l1, ic1), fixedHoleY()])
+                circle(r = Hole_Radius);
+        }
 }
 
 module generateKeychainText(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
@@ -545,11 +628,12 @@ module generateKeychainText(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None"
 module keychain(l1, l2, l3, ic1 = "None", ic2 = "None", ic3 = "None") {
     generateBackPlateWithHole(l1, l2, l3, ic1, ic2, ic3);
     generateKeychainText(l1, l2, l3, ic1, ic2, ic3);
+    generateBorderLine(l1, l2, l3, ic1, ic2, ic3);
 }
 
-// ─────────────────────────────────────────────
+// -------------------------------------------------
 // DATA FILTER & GRID
-// ─────────────────────────────────────────────
+// -------------------------------------------------
 all_l1  = [n1_line1, n2_line1, n3_line1];
 all_ic1 = [n1_line1_icon, n2_line1_icon, n3_line1_icon];
 
@@ -559,7 +643,6 @@ all_ic2 = [n1_line2_icon, n2_line2_icon, n3_line2_icon];
 all_l3  = [n1_line3, n2_line3, n3_line3];
 all_ic3 = [n1_line3_icon, n2_line3_icon, n3_line3_icon];
 
-// Filter indeks nama yang terisi
 active_indices = [for (i = [0:2]) if (all_l1[i] != "") i];
 total          = len(active_indices);
 
@@ -570,9 +653,6 @@ total_h   = grid_rows * slot_h + (grid_rows - 1) * gap_y;
 start_x   = (bed_x - total_w) / 2 + slot_w / 2;
 start_y   = (bed_y - total_h) / 2 + slot_h / 2;
 
-// ─────────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────────
 if (total > 0) {
     for (idx = [0 : total - 1]) {
         i   = active_indices[idx];
